@@ -3,6 +3,7 @@ package com.checkmattech.food.service;
 import com.checkmattech.food.*;
 import com.checkmattech.food.domain.MovimentacaoEstoqueDomain;
 import com.checkmattech.food.domain.ProdutoDomain;
+import com.checkmattech.food.domain.TipoMovimentoDomain;
 import com.checkmattech.food.exception.ResourceNotFoundException;
 import com.checkmattech.food.repository.MovimentacaoEstoqueRepository;
 import com.checkmattech.food.repository.ProdutoRepository;
@@ -36,6 +37,13 @@ public class ProdutoService {
     @Transactional
     public MovimentacaoEstoqueDomain entradaEstoque(Long produtoID, BigDecimal quantidade, String observacao){
         if(quantidade  == null || quantidade.compareTo(BigDecimal.ZERO) <= 0) throw new IllegalArgumentException("Quantidade nao pode ser menor que 0");
-        
+
+        ProdutoDomain produto = buscarID(produtoID);
+        produto.adicionarEstoque(quantidade);
+        produtoRepository.save(produto);
+
+        MovimentacaoEstoqueDomain mov = new MovimentacaoEstoqueDomain(produto, quantidade, TipoMovimentoDomain.Entrada, observacao);
+        movimentacaoEstoqueRepository.save(mov);
+        return mov;
     }
 }
