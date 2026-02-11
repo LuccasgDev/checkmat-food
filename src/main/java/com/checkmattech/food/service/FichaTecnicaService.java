@@ -48,4 +48,15 @@ public class FichaTecnicaService {
                 .orElseThrow(() -> new ResourceNotFoundException("Ficha inexistente: "+ FichaID));
         fichaTecnicaRepo.delete(ficha);
     }
+
+    @Transactional
+    public FichaTecnicaDomain atualizarQuantidade(Long fichaId, BigDecimal novaQuantidade) {
+        if (novaQuantidade == null || novaQuantidade.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Quantidade usada deve ser maior que zero");
+        }
+        FichaTecnicaDomain ficha = fichaTecnicaRepo.findById(fichaId)
+                .orElseThrow(() -> new ResourceNotFoundException("Ficha inexistente: " + fichaId));
+        ficha.setQuantidadeUsada(novaQuantidade);
+        return fichaTecnicaRepo.save(ficha);
+    }
 }

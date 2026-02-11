@@ -17,19 +17,8 @@ public class MovimentacaoController {
         this.movService = movService;
     }
 
-    @GetMapping("/produto/{id}")
-    public ResponseEntity<List<MovimentacaoEstoqueDomain>> ListarPorProtudo (@PathVariable Long id){
-        return ResponseEntity.ok(movService.listarPorProduto(id));
+    @GetMapping("/produto/{produtoId}")
+    public ResponseEntity<List<MovimentacaoEstoqueDomain>> listarPorProduto(@PathVariable Long produtoId) {
+        return ResponseEntity.ok(movService.listarPorProduto(produtoId));
     }
-
-    @PostMapping("/produto/{produtoID}/entrada")
-    public ResponseEntity<MovimentacaoEstoqueDomain> entradaMovimentacao (@PathVariable Long produtoID, @RequestParam BigDecimal quantidade, @RequestParam(required = false) String observacao){
-        return ResponseEntity.ok(movService.ajustarEntrada(produtoID, quantidade, observacao));
-    }
-
-    @PostMapping("/produto/{produtoID}/saida")
-    public ResponseEntity<MovimentacaoEstoqueDomain> saidaMovimentacao (@PathVariable Long produtoID, @RequestParam BigDecimal quantidade, @RequestParam(required = false) String observacao) {
-        return ResponseEntity.ok(movService.ajustarEntrada(produtoID, quantidade, observacao));
-    }
-
 }

@@ -18,7 +18,7 @@ public class FichaTecnicaController {
         this.fichaService = fichaService;
     }
 
-    // 🔹 Adicionar item na ficha técnica
+    // Adicionar item na ficha técnica
     @PostMapping
     public ResponseEntity<FichaTecnicaDomain> adicionarItem(
             @RequestParam Long pratoId,
@@ -29,13 +29,22 @@ public class FichaTecnicaController {
         return ResponseEntity.ok(ficha);
     }
 
-    // 🔹 Listar ficha técnica de um prato
+    // Listar ficha técnica de um prato
     @GetMapping("/prato/{pratoId}")
     public ResponseEntity<List<FichaTecnicaDomain>> listarPorPrato(@PathVariable Long pratoId) {
         return ResponseEntity.ok(fichaService.listarPorPrato(pratoId));
     }
 
-    // 🔹 Remover item da ficha técnica
+    // Atualizar quantidade de um item
+    @PutMapping("/{fichaId}")
+    public ResponseEntity<FichaTecnicaDomain> atualizarQuantidade(
+            @PathVariable Long fichaId,
+            @RequestParam BigDecimal quantidadeUsada) {
+        FichaTecnicaDomain atualizada = fichaService.atualizarQuantidade(fichaId, quantidadeUsada);
+        return ResponseEntity.ok(atualizada);
+    }
+
+    // Remover item da ficha técnica
     @DeleteMapping("/{fichaId}")
     public ResponseEntity<Void> remover(@PathVariable Long fichaId) {
         fichaService.removerItem(fichaId);

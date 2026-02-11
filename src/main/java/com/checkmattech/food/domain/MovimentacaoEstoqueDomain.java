@@ -15,7 +15,7 @@ public class MovimentacaoEstoqueDomain {
     @JoinColumn(name = "produto_id", nullable = false)
     private ProdutoDomain produto;
 
-    @Column(name = "false")
+    @Column(name = "quantidade", nullable = false)
     private BigDecimal quantidade;
 
     @Enumerated(EnumType.STRING)
@@ -35,5 +35,13 @@ public class MovimentacaoEstoqueDomain {
         this.quantidade = quantidade;
         this.tipo = tipo;
         this.observacao = observacao;
+        this.dataMovimento = LocalDateTime.now();
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.dataMovimento == null) {
+            this.dataMovimento = LocalDateTime.now();
+        }
     }
 }

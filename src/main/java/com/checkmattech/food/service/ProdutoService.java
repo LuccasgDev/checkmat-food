@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ProdutoService {
@@ -32,6 +32,24 @@ public class ProdutoService {
     public ProdutoDomain buscarID(Long id){
         return produtoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Produto não  encontrado"));
+    }
+
+    public List<ProdutoDomain> listarTodos() {
+        return produtoRepository.findAll();
+    }
+
+    public ProdutoDomain atualizar(Long id, ProdutoDomain dados) {
+        ProdutoDomain existente = buscarID(id);
+        existente.setNome(dados.getNome());
+        existente.setUnidadeMedida(dados.getUnidadeMedida());
+        existente.setEstoqueMinimo(dados.getEstoqueMinimo());
+        existente.setEstoqueAtual(dados.getEstoqueAtual());
+        return produtoRepository.save(existente);
+    }
+
+    public void excluir(Long id) {
+        ProdutoDomain existente = buscarID(id);
+        produtoRepository.delete(existente);
     }
 
     @Transactional
